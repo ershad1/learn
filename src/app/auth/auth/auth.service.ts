@@ -1,12 +1,13 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Http, RequestOptions} from '@angular/http';
 
-import { Observable } from 'rxjs/Observable';
+import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
-// import {Login, LoginStatus, NewUser, SignupStatus} from './login';
 import {Observer} from 'rxjs/Observer';
 import {Headers} from '@angular/http';
 import {Router} from '@angular/router';
@@ -35,7 +36,7 @@ export class AuthService {
 
   signup(newUser: NewUser): Promise<SignupStatus> {
     const url = `${this.serverUrl}/account/signup`;
-    const options       = new RequestOptions({ headers: this.headers });
+    const options = new RequestOptions({headers: this.headers});
 
     return this.http.post(url, newUser, options)
       .toPromise()
@@ -44,13 +45,16 @@ export class AuthService {
   }
 
   login(login: Login): Observable<LoginStatus> {
-    let params = new URLSearchParams();
+    const params = new URLSearchParams();
     params.append('username', login.username);
     params.append('password', login.password);
     params.append('grant_type', 'password');
     params.append('client_id', 'healthapp');
-    let headers = new Headers({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8', 'Authorization': 'Basic ' + btoa('healthapp:HeAltH@!23')});
-    let options = new RequestOptions({ headers: headers });
+    const headers = new Headers({
+      'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+      'Authorization': 'Basic ' + btoa('healthapp:HeAltH@!23')
+    });
+    const options = new RequestOptions({headers: headers});
 
     return this.http.post('http://localhost:8080/oauth/token', params.toString(), options)
       .map(res => {
@@ -63,7 +67,7 @@ export class AuthService {
   }
 
   saveToken(token: any) {
-    let expireDate = new Date().getTime() + (1000 * token.expires_in);
+    const expireDate = new Date().getTime() + (1000 * token.expires_in);
     Cookie.set('access_token', token.access_token, expireDate);
     Cookie.set('role', token.role);
     this.changeLoginStatus(true);
@@ -95,7 +99,7 @@ export class AuthService {
 
   token(): void {
     const url = `${this.serverUrl}/account/token`;
-    const options       = new RequestOptions({ headers: this.headers, withCredentials: true });
+    const options = new RequestOptions({headers: this.headers, withCredentials: true});
 
     this.http.get(url, options)
       .toPromise()
