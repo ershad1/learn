@@ -1,5 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
-html, body {
-  height: 100%;
-  margin: 0;
+/*@import "~@angular/material/prebuilt-themes/indigo-pink.css";*/
+body {
+  /*margin: 120px;*/
+}
+
+.flex-container {
+  display: flex;
+  /*width: 200px;*/
+  /*height: 200px;*/
+  border: 1px solid black;
+  justify-content: center;
+}
+
+.flex-item {
+  box-sizing: border-box;
+  /*width: 150px;*/
+  border: 5px solid blue;
+  align-self: center;
+  background-color: red;
+  display: flex;
+  flex-flow: column;
+  max-height: 100%;
+}
+
+.content {
+  background-color: grey;
+  flex: 1;
+  overflow-y: auto;
 }
